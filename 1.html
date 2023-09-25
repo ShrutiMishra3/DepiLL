@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drag and Drop PDF Upload</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			line-height: 1.5;
+			margin: 0;
+			padding: 0;
+		}
+		#dropzone {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 300px;
+			border: 3px dashed #ccc;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		#dropzone.active {
+			border-color: #007bff;
+			background-color: #f8f9fa;
+		}
+		#file-input {
+			display: none;
+		}
+		#file-name {
+			margin-top: 10px;
+			font-size: 14px;
+			color: #333;
+		}
+	</style>
+</head>
+<body>
+	<div id="dropzone">Drag and drop a PDF file here, or click to select a file.</div>
+	<div id="file-name"></div>
+	<input type="file" id="file-input">
+
+	<script>
+		const dropzone = document.getElementById('dropzone');
+		const fileInput = document.getElementById('file-input');
+		const fileName = document.getElementById('file-name');
+
+		// prevent default behavior for drag and drop events
+		dropzone.addEventListener('dragover', (event) => {
+			event.preventDefault();
+			dropzone.classList.add('active');
+		});
+
+		dropzone.addEventListener('dragleave', () => {
+			dropzone.classList.remove('active');
+		});
+
+		dropzone.addEventListener('drop', (event) => {
+			event.preventDefault();
+			dropzone.classList.remove('active');
+			const file = event.dataTransfer.files[0];
+			handleFile(file);
+		});
+
+		fileInput.addEventListener('change', () => {
+			const file = fileInput.files[0];
+			handleFile(file);
+		});
+
+		function handleFile(file) {
+			if (file.type === 'application/pdf') {
+				fileName.textContent = file.name;
+				// upload file to server
+				// replace this with your own code to handle the upload
+				console.log('Uploading file:', file);
+			} else {
+				alert('Please upload a PDF file.');
+			}
+		}
+	</script>
+</body>
+</html>
